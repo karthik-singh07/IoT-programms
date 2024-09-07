@@ -1,0 +1,24 @@
+
+const int IR_Pin=4;
+const int LED_Pin=5;
+const int Buzzer_Pin=6;
+int value=0;
+void setup(){
+  pinMode(IR_Pin,INPUT);
+  pinMode(LED_Pin,OUTPUT);
+  pinMode(Buzzer_Pin,OUTPUT);
+}
+void loop(){
+  value=digitalRead(IR_Pin);
+  if(value==1)
+  {
+    digitalWrite(LED_Pin,HIGH);
+    tone(Buzzer_Pin,1000);
+  }
+  else
+  {
+    digitalWrite(LED_Pin,LOW);
+    noTone(Buzzer_Pin);
+  }
+  delay(100);
+}
