@@ -1,0 +1,32 @@
+#include<ESP8266WiFi.h> 
+#include<DHT11.h> 
+#include<ThingSpeak.h> 
+const char*ssid="PREATAM KASAVARAJAPETA"; 
+const char*pass="appu513254"; 
+DHT11 dht11(2); 
+WiFiClient client; 
+long myChannelNumber=2648940; 
+const char myWriteAPIKey[]="66PXHH2LZQC0JR2R"; 
+void setup(){ 
+  Serial.begin(9600); 
+  WiFi.begin(ssid,pass); 
+  while(WiFi.status()!=WL_CONNECTED) 
+  { 
+    delay(200); 
+    Serial.print(".."); 
+  } 
+  Serial.println(); 
+  Serial.println("Node MCU Connected!"); 
+  Serial.println(WiFi.localIP()); 
+  //dht11.begin(); 
+  ThingSpeak.begin(client); 
+} 
+void loop(){ 
+  float h=dht11.readHumidity(); 
+  float t=dht11.readTemperature(); 
+  Serial.println("Temperature: "+ (String)t); 
+  Serial.println("Humidity: "+ (String)h); 
+  ThingSpeak.writeField(myChannelNumber,1,t,myWriteAPIKey); 
+  ThingSpeak.writeField(myChannelNumber,2,h,myWriteAPIKey); 
+  delay(2000); 
+}
