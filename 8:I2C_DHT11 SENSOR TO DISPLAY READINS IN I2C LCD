@@ -1,0 +1,48 @@
+
+#include <ESP8266WiFi.h> 
+#include <LiquidCrystal_I2C.h> 
+#include <DHT.h> 
+#define DHTPIN 2 
+#define DHTTYPE DHT11 
+DHT dht(DHTPIN, DHTTYPE); 
+LiquidCrystal_I2C lcd(0x27, 16, 2); 
+void setup() { 
+  Serial.begin(115200); 
+  delay(1000); 
+  dht.begin(); // Start the DHT sensor 
+  lcd.init();  // Initialize the LCD 
+  lcd.backlight(); // Turn on the LCD backlight 
+  lcd.setCursor(0, 0); 
+  lcd.print("Temperature: "); 
+  lcd.setCursor(0, 1); 
+  lcd.print("Humidity: "); 
+} 
+void loop() { 
+  float h = dht.readHumidity();     
+  float t = dht.readTemperature(); 
+  if (isnan(h) || isnan(t)) { 
+    Serial.println("Failed to read from DHT11 sensor!"); 
+    lcd.setCursor(13, 0); 
+    lcd.print("     "); // Clear temperature value 
+    lcd.setCursor(9, 1); 
+    lcd.print("     "); // Clear humidity value 
+    delay(2000); 
+    return; 
+  } 
+  Serial.print("Humidity: "); 
+  Serial.print(h); 
+  Serial.print("%\t"); 
+  Serial.print("Temperature: "); 
+  Serial.print(t); 
+  Serial.println("°C"); 
+  lcd.setCursor(13, 0); 
+  lcd.print("     "); // Clear previous temperature value 
+  lcd.setCursor(13, 0); 
+  lcd.print(t); // Display new temperature value 
+  lcd.setCursor(9, 1); 
+  lcd.print("     "); // Clear previous humidity value 
+  lcd.setCursor(9, 1); 
+  lcd.print(h); // Display new humidity value 
+  delay(2000);  // Wait 2 seconds before the next reading 
+} 
+ 
