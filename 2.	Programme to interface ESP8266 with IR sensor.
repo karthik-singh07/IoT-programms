@@ -1,8 +1,19 @@
-int IR = D1;
-//Definethe pin Name.
-void setup() {
-Serial.begin(9600); //Begin the serial communication between Node MCU and Serial monitor. 
-pinMode(IR, INPUT); // Declare the sensor as Input.
+int isObstaclePin = 4;
+int isObstacle = 0;
+void setup()
+{
+  pinMode(isObstaclePin,INPUT);
+  Serial.begin(9600);
 }
-void loop() { int s = digitalRead(IR); //This will read the sensor data and store it in a variable. Serial.println(s); //This will print the sensor data to serial monitor.
-} 
+void loop(){
+  isObstacle = digitalRead(isObstaclePin);
+  if(isObstacle==1)
+  {
+    Serial.println("Clear");
+  }
+  else
+  {
+    Serial.println("OBSTACLE!! OBSTACLE!!");
+  }
+  delay(2000);
+}
