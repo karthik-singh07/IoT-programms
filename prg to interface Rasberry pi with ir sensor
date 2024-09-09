@@ -1,0 +1,17 @@
+import RPi.GPIO as GPIO
+import time
+
+GPIO.setmode(GPIO.BCM)
+
+IR_PIN = 24
+
+GPIO.setup(IR_PIN, GPIO.IN)
+
+try:
+    while True:
+        if GPIO.input(IR_PIN):
+            print("Object not found")
+        else:
+            print("Object found")
+        time.sleep(2.5)
+except KeyboardI
